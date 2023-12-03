@@ -7,6 +7,12 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+const adminRoutes = require('./routes/admin');
+
+const shopRoutes = require('./routes/shop');
+
+const notFound = require('./routes/notFound');
+
 app.use(bodyParser.urlencoded({extended: false}));
 
 // app.use((req, res, next) => {
@@ -14,33 +20,13 @@ app.use(bodyParser.urlencoded({extended: false}));
 //     next(); // allows request to continue to other middleware.
 // });
 
-app.use('/add-product',(req, res, next) => { // '/add-product is a path used call callback and send response. specific path must be called
-    // before general '/' path otherwise it will call all callbaks. addig specoic path will insure we call that path only. 
-    // adding path we need not to write next();. 
-    console.log(' I am middleware');
-    res.send(`
-    <form action="/product" method="post">
-      <label for="productName">Product Name:</label>
-      <input type="text" id="productName" name="productName"><br><br>
+app.use(adminRoutes);
 
-      <label for="productSize">Product Size:</label>
-      <input type="text" id="productSize" name="productSize"><br><br>
+app.use(shopRoutes);
 
-      <button type="submit">Submit</button>
-    </form>
-  `);
-});
+app.use(notFound);
 
-app.use('/product', (req, res, next) => {
-    console.log(req.body.productName);
-    console.log(req.body.productSize);
-    res.redirect("/");
-})
 
-app.use('/',(req, res, next) => {
-    console.log(' I am another middleware');
-    res.send('<h1>Hello Express Js</h1>')
-})
 
 // const server = http.createServer(app);
 
