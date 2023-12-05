@@ -1,35 +1,25 @@
-// const http = require("http");
-// W;hen using express we do not need to install http or htpps
+const path = require('path');
 
-const express = require("express");
+const express = require('express');
 
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 
 const app = express();
 
 const adminRoutes = require('./routes/admin');
-
 const shopRoutes = require('./routes/shop');
-
-const notFound = require('./routes/notFound');
+const contactUsRoute = require('./routes/contactus');
+const successRoute = require('./routes/success');
 
 app.use(bodyParser.urlencoded({extended: false}));
 
-// app.use((req, res, next) => {
-//     console.log(" I am in the middleware");
-//     next(); // allows request to continue to other middleware.
-// });
-
-app.use(adminRoutes);
-
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
+app.use('/contactus', contactUsRoute);
+app.use('/success', successRoute);
 
-app.use(notFound);
+app.use((req, res, next) => {
+    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
+});
 
-
-
-// const server = http.createServer(app);
-
-// server.listen(4000);
-//  rather we can write :
-app.listen(4000); 
+app.listen(4000);

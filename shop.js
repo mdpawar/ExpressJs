@@ -1,14 +1,11 @@
+const path = require('path');
+
 const express = require('express');
 
-const routes = express.Router();
+const router = express.Router();
 
-routes.get('/',(req, res, next) => {
-    console.log(' I am another middleware');
-    res.send('<h1>Hello Express Js</h1>')
-})
+router.get('/', (req, res, next) => {
+  res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
+});
 
-routes.use((req, res, next) => {
-    res.status(404).render('404');
-  });
-
-module.exports = routes;
+module.exports = router;
